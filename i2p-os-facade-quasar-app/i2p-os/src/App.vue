@@ -3,7 +3,7 @@
   <q-layout view="lHh Lpr lFf" class="bg-dark text-white">
 
     <div class="topbar">
-      <div class="logo">i2p-OS</div>
+      <div class="logo">I2P OS layer</div>
       <div class="status">Initializing network...</div>
     </div>
 
@@ -19,7 +19,7 @@
     </div>
 
     <div class="bottom">
-      i2p-OS Runtime v0.1 • Nodes: 128 • Latency: 320ms
+      I2P-OS Runtime v0.1 • Reseeds: Unknown • Nodes: Unknown • Latency: Unknown
     </div>
 
   </q-layout>
