@@ -5,8 +5,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>I2P OS layer</title>
+    <style>
+	  html, body {
+	    margin: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    background: radial-gradient(circle at center, #0d0d30, #1a1a40, #2a2a60);
+	  }
+	  canvas {
+	    display: block;
+	    z-index: 1;
+	    position: fixed;
+	  }
+	  #content {
+	    z-index: 0;
+	  }
+    </style>
   </head>
   <body>
-    <!-- quasar:entry-point -->
+    <canvas id="network"></canvas>
+    <script>
+	const canvas = document.getElementById('network');
+	const ctx = canvas.getContext('2d');
+	let width = canvas.width = window.innerWidth;
+	let height = canvas.height = window.innerHeight;
+
+	const NODE_COUNT = 80;
+	const MAX_DIST = 200;
+
+	let nodes = [];
+	for(let i=0;i<NODE_COUNT;i++){
+	  nodes.push({
+	    x: Math.random()*width,
+	    y: Math.random()*height,
+	    vx: (Math.random()-0.5)*0.5,
+	    vy: (Math.random()-0.5)*0.5
+	  });
+	}
+
+	function draw(){
+	  ctx.clearRect(0,0,width,height);
+	  
+	  // draw lines
+	  for(let i=0;i<NODE_COUNT;i++){
+	    for(let j=i+1;j<NODE_COUNT;j++){
+	      let dx = nodes[i].x - nodes[j].x;
+	      let dy = nodes[i].y - nodes[j].y;
+	      let dist = Math.sqrt(dx*dx + dy*dy);
+	      if(dist < MAX_DIST){
+	        const opacity = 1 - dist/MAX_DIST;
+	        ctx.strokeStyle = 'rgba(180,200,255,' + (opacity*0.6) + ')';
+	        ctx.lineWidth = 1;
+	        ctx.beginPath();
+	        ctx.moveTo(nodes[i].x, nodes[i].y);
+	        ctx.lineTo(nodes[j].x, nodes[j].y);
+	        ctx.stroke();
+	      }
+	    }
+	  }
+	  
+	  // move nodes
+	  for(let i=0;i<NODE_COUNT;i++){
+	    nodes[i].x += nodes[i].vx;
+	    nodes[i].y += nodes[i].vy;
+	    
+	    if(nodes[i].x < 0 || nodes[i].x > width) nodes[i].vx *= -1;
+	    if(nodes[i].y < 0 || nodes[i].y > height) nodes[i].vy *= -1;
+	    
+	    // draw nodes
+	    ctx.fillStyle = 'rgba(200,220,255,0.7)';
+	    ctx.beginPath();
+	    ctx.arc(nodes[i].x,nodes[i].y,2,0,Math.PI*2);
+	    ctx.fill();
+	  }
+
+	  requestAnimationFrame(draw);
+	}
+
+	window.addEventListener('resize', () => {
+	  width = canvas.width = window.innerWidth;
+	  height = canvas.height = window.innerHeight;
+	});
+
+	draw();
+    </script>
+    <div id="content">
+      <!-- quasar:entry-point -->
+    </div>
   </body>
 </html>
