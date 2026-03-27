@@ -1,6 +1,6 @@
 
 <template>
-  <q-layout view="lHh Lpr lFf" class="bg-dark text-white">
+  <q-layout view="lHh Lpr lFf" class="text-white">
 
     <div class="topbar">
       <div class="logo">I2P OS layer</div>
